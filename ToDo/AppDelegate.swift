@@ -23,7 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navController = UINavigationController(rootViewController: vc)
         window?.makeKeyAndVisible()
         window?.rootViewController = navController
-//        print(Realm.Configuration.defaultConfiguration.fileURL)
+        
+        print(Realm.Configuration.defaultConfiguration.fileURL)
+        
         return true
     }
 

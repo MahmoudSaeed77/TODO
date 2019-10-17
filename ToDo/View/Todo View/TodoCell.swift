@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class TodoCell: UITableViewCell {
+class TodoCell: SwipeTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: "cellId")
     }

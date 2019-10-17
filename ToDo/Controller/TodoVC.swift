@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 
 class TodoVC: UIViewController {
+    var todoView = TodoView()
     let cellId = "cellId"
     var selectCategory: Category? {
         didSet{
@@ -24,27 +25,17 @@ class TodoVC: UIViewController {
     
     let realm = try! Realm()
     
-    let tableView: UITableView = {
-        let table = UITableView()
-        table.translatesAutoresizingMaskIntoConstraints = false
-        return table
-    }()
     
-    let searchBar: UISearchBar = {
-        let search = UISearchBar()
-        search.translatesAutoresizingMaskIntoConstraints = false
-        return search
-    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        view = todoView
         
         setupNavigation()
-        setupView()
+        
         registerClasses()
         delegate()
-        addConstraints()
+        
         
         loadData()
     }
@@ -58,31 +49,16 @@ class TodoVC: UIViewController {
     }
     
     func registerClasses(){
-        tableView.register(TodoCell.self, forCellReuseIdentifier: cellId)
+        todoView.tableView.register(TodoCell.self, forCellReuseIdentifier: cellId)
     }
     
     func delegate(){
-        tableView.delegate = self
-        tableView.dataSource = self
-        searchBar.delegate = self
+        todoView.tableView.delegate = self
+        todoView.tableView.dataSource = self
+        todoView.searchBar.delegate = self
     }
     
-    func setupView(){
-        view.backgroundColor = UIColor.white
-        view.addSubview(tableView)
-        view.addSubview(searchBar)
-    }
     
-    func addConstraints(){
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            searchBar.widthAnchor.constraint(equalTo: view.widthAnchor),
-            
-            tableView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor)
-            ])
-    }
     
     
     @objc func addAction(){
@@ -111,7 +87,7 @@ class TodoVC: UIViewController {
             }
             
             
-            self.tableView.reloadData()
+            self.todoView.tableView.reloadData()
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -127,12 +103,12 @@ class TodoVC: UIViewController {
             print("error saving \(error)")
         }
         
-        self.tableView.reloadData()
+        self.todoView.tableView.reloadData()
     }
     
     func loadData() {
         item = selectCategory?.item.sorted(byKeyPath: "dateCreated", ascending: true)
-        tableView.reloadData()
+        todoView.tableView.reloadData()
     }
 }
 
